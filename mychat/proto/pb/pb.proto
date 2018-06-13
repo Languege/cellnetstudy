@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package pb;
+
+message ChatREQ {
+	string Content = 1;
+}
+
+// 消息和用户ID绑定
+message BindUid {
+	string Uid = 1;
+}
+
+// 用户对用户消息
+message ChatP2P {
+	string Content = 1;
+	string Uid = 2;
+}
+
+//心跳
+message ChatACK {
+	string Content = 1;
+	int64	Id     = 2;
+}

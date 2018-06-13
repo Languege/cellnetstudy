@@ -1,7 +1,7 @@
 package main
 
 import (
-	"cellnetstudy/mychat/proto"
+	"cellnetstudy/mychat/proto/pb"
 	"github.com/davyxu/cellnet"
 	"github.com/davyxu/cellnet/peer"
 	"github.com/davyxu/cellnet/proc"
@@ -35,10 +35,10 @@ func main() {
 		case *cellnet.SessionClosed:
 			log.Debugln("session closed: ", ev.Session().ID())
 		// 收到某个连接的ChatREQ消息
-		case *proto.ChatREQ:
+		case *pb.ChatREQ:
 
 			// 准备回应的消息
-			ack := proto.ChatACK{
+			ack := pb.ChatACK{
 				Content: msg.Content,       // 聊天内容
 				Id:      ev.Session().ID(), // 使用会话ID作为发送内容的ID
 			}
@@ -52,7 +52,7 @@ func main() {
 			})
 
 			ev.Session().Send(&ack)
-		case *proto.ChatP2P: //期望实现将消息发给指定用户
+		case *pb.ChatP2P: //期望实现将消息发给指定用户
 			log.Debugln("ChatP2P Content:", msg.Content, "From:", ev.Session().ID(), " To:", msg.Uid)
 			// ev.Session().Send(msg)
 			//获取接受方session
@@ -62,7 +62,7 @@ func main() {
 			ses := p.(cellnet.SessionAccessor).GetSession(*sesId)
 			ses.Send(msg)
 
-		case *proto.BindUid:
+		case *pb.BindUid:
 			log.Debugln("Uid ", msg.Uid, " Bind Session:", ev.Session().ID())
 			p.(cellnet.ContextSet).SetContext(msg.Uid, ev.Session().ID())
 

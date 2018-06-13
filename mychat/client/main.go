@@ -2,7 +2,7 @@ package main
 
 import (
 	"bufio"
-	"cellnetstudy/mychat/proto"
+	"cellnetstudy/mychat/proto/pb"
 	"github.com/davyxu/cellnet"
 	"github.com/davyxu/cellnet/peer"
 	"github.com/davyxu/cellnet/proc"
@@ -62,7 +62,7 @@ func main() {
 			log.Debugln("client connected")
 		case *cellnet.SessionClosed:
 			log.Debugln("client error")
-		case *proto.ChatACK:
+		case *pb.ChatACK:
 			log.Infof("sid%d say: %s", msg.Id, msg.Content)
 		}
 	})
@@ -78,7 +78,7 @@ func main() {
 
 		p.(interface {
 			Session() cellnet.Session
-		}).Session().Send(&proto.ChatREQ{
+		}).Session().Send(&pb.ChatREQ{
 			Content: str,
 		})
 
@@ -87,7 +87,7 @@ func main() {
 
 			p.(interface {
 				Session() cellnet.Session
-			}).Session().Send(&proto.ChatP2P{
+			}).Session().Send(&pb.ChatP2P{
 				Content: str,
 				Uid:     uid,
 			})
@@ -97,7 +97,7 @@ func main() {
 
 			p.(interface {
 				Session() cellnet.Session
-			}).Session().Send(&proto.BindUid{
+			}).Session().Send(&pb.BindUid{
 				Uid: uid,
 			})
 
